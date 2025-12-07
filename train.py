@@ -60,6 +60,25 @@ def estimate_loss():
 # Set an Optimizer
 optimizer = optim.AdamW(model.parameters(),lr = config['learning_rate'])
 
+# Train the model
+def train_model(max_steps):
+    for i in range(max_steps):
+        # Forward pass
+        X,Y = get_batch('train')
+        logits,loss = model(X,Y)
+        
+        # Backward pass
+        optimizer.zero_grad(set_to_none= True)
+        loss.backward()
+        optimizer.step()
+
+        # Print out the estimate loss after eval_iters
+        if i % config['eval_iters'] or i == max_steps:
+            loss_split = estimate_loss()
+            print(f'step {i}: train loss {loss_split['train']:.4f}, val loss {loss_split['val']:.4f}')
+
+train_model(max_steps = config['max_steps'])
+
 
 
 
