@@ -6,7 +6,7 @@ from torch.nn import functional as F
 
 class SmallGPT(nn.Module):
     def __init__(self, vocab_size, n_emb, block_size, num_heads, n_layer):
-
+        super().__init__()
         self.token_emb_table = nn.Embedding(vocab_size,n_emb)
         self.position_emb_table = nn.Embedding(block_size,n_emb)
         self.blocks = nn.Sequential(*[Block(num_heads=num_heads, n_emb =n_emb, block_size=block_size) for _ in range(n_layer)])
@@ -26,7 +26,7 @@ class SmallGPT(nn.Module):
         
         # idx (B,T)
         tok_emb = self.token_emb_table(idx) 
-        pos_emb = self.position_emb_table(torch.arrange(T))
+        pos_emb = self.position_emb_table(torch.arange(T))
 
         x = tok_emb + pos_emb
         # Blocks + LayerNorm + MLP 

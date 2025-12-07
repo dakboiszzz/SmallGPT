@@ -73,7 +73,7 @@ def train_model(max_steps):
         optimizer.step()
 
         # Print out the estimate loss after eval_iters
-        if i % config['eval_iters'] or i == max_steps:
+        if i % config['eval_iters'] == 0 or i == max_steps:
             loss_split = estimate_loss()
             print(f'step {i}: train loss {loss_split['train']:.4f}, val loss {loss_split['val']:.4f}')
 

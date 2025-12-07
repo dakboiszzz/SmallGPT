@@ -10,4 +10,4 @@ n_layer: 4
 seed: 1337
 eval_iters: 500
 max_steps: 5000
-learning_rate: 3e-4
+learning_rate: !!float 3e-4
