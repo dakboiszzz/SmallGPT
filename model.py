@@ -1,4 +1,3 @@
-from data import DataPrep
 from layers import Block
 
 import torch

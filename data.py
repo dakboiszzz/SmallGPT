@@ -2,9 +2,8 @@ import torch
 
 # Create DataPrep class, set block_size
 class DataPrep():
-    def __init__(self,words, block_size):
+    def __init__(self,words):
         self.words = words
-        self.block_size = block_size
         self.chars = self.getChars()
         self.vocab_size = len(self.chars) + 1
         self.stoi = self.string_to_int()
