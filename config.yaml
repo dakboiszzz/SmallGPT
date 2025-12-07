@@ -9,3 +9,4 @@ n_layer: 4
 
 seed: 1337
 eval_iters: 200
+learning_rate = 3e-4
