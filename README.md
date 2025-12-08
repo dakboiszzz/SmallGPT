@@ -11,6 +11,8 @@ Based on (again) the LLM series of Andrej Karpathy
 - Work on other database?
 
 # Some interesting results
+
+## First version
 Overfitting before Dropout/ Becfore scaling
 ```
 step 0: train loss 4.1722, val loss 4.2064
@@ -24,4 +26,29 @@ step 3500: train loss 2.5268, val loss 4.7259
 step 4000: train loss 2.4982, val loss 4.7442
 step 4500: train loss 2.4921, val loss 4.8018
 step 4999: train loss 2.4628, val loss 4.8977
+```
+## Second version
+Still overfititing after adding Dropout and Projection layers (I added some samples of our model :)
+
+Also before scaling
+```
+step 0: train loss 4.2299, val loss 4.2563
+step 500: train loss 3.3346, val loss 4.0576
+...
+step 4999: train loss 2.5199, val loss 4.7842
+.' llndelach as plen. Cbvuralr make she toowe f .
+LR
+A: To ennd ivy wass bourd t:
+An sinsotbucunasr me,
+Bye, wuld ning; thyhhisir vitind le, hord, trirs thoRcy hadoravet hind bad
+hop o mey ntovonbtiet hid w Mol win me he E U ditass bil teyichinKo I
+AL:
+ANWUSEu Co,
+O zadeleesr d lad worghre dedhI
+She cEEOnfiwe y, nourl;
+Tuegorth jorny nhi
+Tef lovis pcauath dis, macoy cukiw
+; peme thy tee hird,
+Go y lwUThe lonafan o y northd ciw sheso de MWaicm
+Lowathoverl, odme sas cheed morr moyes LI E maadll I g
 ```
