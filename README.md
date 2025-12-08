@@ -2,7 +2,7 @@
 Based on (again) the LLM series of Andrej Karpathy
 
 # To-Do
-- Generate()
+- Add requirement.txt
 - Scale the model
 - Adding Dropout
 - Create projection layer for MultiHead and FeedForward
@@ -11,7 +11,7 @@ Based on (again) the LLM series of Andrej Karpathy
 - Work on other database?
 
 # Some interesting results
-Overfitting before Dropout
+Overfitting before Dropout/ Becfore scaling
 ```
 step 0: train loss 4.1722, val loss 4.2064
 step 500: train loss 3.2092, val loss 3.9087

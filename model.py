@@ -5,12 +5,12 @@ import torch.nn as nn
 from torch.nn import functional as F
 
 class SmallGPT(nn.Module):
-    def __init__(self, vocab_size, n_emb, block_size, num_heads, n_layer):
+    def __init__(self, vocab_size, n_emb, block_size, num_heads, n_layer,dropout):
         super().__init__()
         self.block_size = block_size
         self.token_emb_table = nn.Embedding(vocab_size,n_emb)
         self.position_emb_table = nn.Embedding(block_size,n_emb)
-        self.blocks = nn.Sequential(*[Block(num_heads=num_heads, n_emb =n_emb, block_size=block_size) for _ in range(n_layer)])
+        self.blocks = nn.Sequential(*[Block(num_heads=num_heads, n_emb =n_emb, block_size=block_size,dropout= dropout) for _ in range(n_layer)])
         self.ln_f = nn.LayerNorm(n_emb)
         self.lm_head = nn.Linear(n_emb, vocab_size)
 
