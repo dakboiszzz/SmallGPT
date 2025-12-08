@@ -37,16 +37,19 @@ class MultiHead(nn.Module):
     def __init__(self,num_heads, head_size, n_emb, block_size,dropout):
         super().__init__()
         self.heads = nn.ModuleList([Head(head_size,n_emb,block_size,dropout) for _ in range(num_heads)])
-
+        self.dropout = nn.Dropout(dropout)
+        self.proj = nn.Linear(n_emb, n_emb)
     def forward(self,x):
         out = torch.cat([h(x) for h in self.heads],dim = -1)
+        out = self.dropout(self.proj(out))
         return out
 class FeedForward(nn.Module):
     def __init__(self, n_emb,dropout):
         super().__init__()
         self.net = nn.Sequential(
-            nn.Linear(n_emb,n_emb),
+            nn.Linear(n_emb,4 * n_emb),
             nn.ReLU(),
+            nn.Linear(4 * n_emb,n_emb),
             nn.Dropout(dropout),
         )
     def forward(self,x):
