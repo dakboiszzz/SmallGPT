@@ -7,6 +7,7 @@ from torch.nn import functional as F
 class SmallGPT(nn.Module):
     def __init__(self, vocab_size, n_emb, block_size, num_heads, n_layer):
         super().__init__()
+        self.block_size = block_size
         self.token_emb_table = nn.Embedding(vocab_size,n_emb)
         self.position_emb_table = nn.Embedding(block_size,n_emb)
         self.blocks = nn.Sequential(*[Block(num_heads=num_heads, n_emb =n_emb, block_size=block_size) for _ in range(n_layer)])
@@ -41,7 +42,21 @@ class SmallGPT(nn.Module):
             targets = targets.view(B*T)
             loss = F.cross_entropy(logits, targets)
         return logits, loss
+    def generate(self, idx, max_new_tokens):
+        # id (B,T)
+        for _ in range(max_new_tokens):
+            # Last block_size characters
+            idx_cap = idx[:, -self.block_size:]
+            # Get the logits for the next one
+            logits, loss = self(idx_cap) # B,C
+            # We only care about the last time step
+            logits = logits[:,-1,:]
+            # Get the probs & sample
+            probs = F.softmax(logits, dim = -1)
+            idx_next = torch.multinomial(probs, num_samples= 1) # (B,1)
+            idx = torch.cat((idx,idx_next), dim = 1) # (B,T+1)
 
+        return idx
 
 
 
