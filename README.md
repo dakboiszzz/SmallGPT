@@ -4,8 +4,6 @@ Based on (again) the LLM series of Andrej Karpathy
 # To-Do
 - Add requirement.txt
 - Scale the model
-- Adding Dropout
-- Create projection layer for MultiHead and FeedForward
 - Change to RMSNorm
 - Moving to device
 - Work on other database?

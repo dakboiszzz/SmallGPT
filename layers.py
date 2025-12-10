@@ -62,13 +62,13 @@ class Block(nn.Module):
         head_size = n_emb//num_heads
         self.sa = MultiHead(num_heads, head_size, n_emb, block_size,dropout)
         self.ffwd = FeedForward(n_emb,dropout)
-        self.ln1 = nn.LayerNorm(n_emb)
-        self.ln2 = nn.LayerNorm(n_emb)
+        self.rms1 = nn.RMSNorm(n_emb)
+        self.rms2 = nn.RMSNorm(n_emb)
 
     def forward(self,x):
         # Residual connection
-        x = x + self.sa(self.ln1(x))
-        x = x + self.ffwd(self.ln2(x))
+        x = x + self.sa(self.rms1(x))
+        x = x + self.ffwd(self.rms2(x))
         return x
 '''# This is how I will implement the LayerNorm
 class LayerNorm(nn.Module):
