@@ -1,5 +1,5 @@
 import torch
-
+from rope import RotEmb
 # Now we use nn.Module
 import torch.nn as nn
 from torch.nn import functional as F
@@ -15,12 +15,16 @@ class Head(nn.Module):
         # Register buffer for the tril, as it is not really a part of a model
         self.register_buffer('tril',torch.tril(torch.ones(block_size,block_size)))
         self.dropout = nn.Dropout(dropout)
+        # Adding the rope
+        self.rope = RotEmb(head_size,block_size)
     def forward(self,x):
         B,T,C = x.shape
         # Calculate the query and the keys
         k = self.k(x) 
         q = self.q(x)
-
+        # Apply the RoPE for the keys and queries but BEFORE calculating the attention matrix
+        q = self.rope(q)
+        k = self.rope(k)
         # Measure the dot product, divide all by the dimension
         wei = q @ k.transpose(-2,-1) * k.shape[-1] ** -0.5
 

@@ -6,9 +6,9 @@ class RotEmb(nn.Module):
         # prepare frequency right at the init
         
         # freqs (scalar for each pair of positions) -> (head_size/2)
-        freqs = 1.0 / (theta ** (torch.arrange(0,head_size,2).float() / head_size))
+        freqs = 1.0 / (theta ** (torch.arange(0,head_size,2).float() / head_size))
         # m (represents the postion in the time dim) -> (T)
-        m = torch.arrange(T).float()
+        m = torch.arange(T).float()
         # Outer product -> (T,head_size/2)
         angles = torch.outer(m,freqs)
         # Double each entries to make (T, head_size)
