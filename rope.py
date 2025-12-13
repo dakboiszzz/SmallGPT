@@ -18,8 +18,8 @@ class RotEmb(nn.Module):
         
         # For efficiency, those are constants so we need to register buffer for them
         # And also, creating additional dimension (for batches) and apply cos and sin
-        self.register_buffer('cos_cached',emb.cos()[None,None, :,:]) # (1,1,T,D)
-        self.register_buffer('sin_cached',emb.sin()[None,None, :,:])
+        self.register_buffer('cos_cached',emb.cos()[None, :,:]) # (1,1,T,D)
+        self.register_buffer('sin_cached',emb.sin()[None, :,:])
     def forward(self,x):
         # D represents the head_size
         B, T, D = x.shape
@@ -37,8 +37,8 @@ class RotEmb(nn.Module):
         
         
         # Take the cos and sin (1,T,D)
-        cos = self.cos_cached[:,:,:T,:]
-        sin = self.sin_cached[:,:,:T,:]
+        cos = self.cos_cached[:,:T,:]
+        sin = self.sin_cached[:,:T,:]
         
         x_rotated = (x * cos) + (x_rot * sin)
         # x_rotated (B,T,D) -> same size as input
