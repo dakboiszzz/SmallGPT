@@ -38,7 +38,7 @@ class RotEmb(nn.Module):
         
         # Take the cos and sin (1,T,D)
         cos = self.cos_cached[:,:,:T,:]
-        sin = self.cos_cached[:,:,:T,:]
+        sin = self.sin_cached[:,:,:T,:]
         
         x_rotated = (x * cos) + (x_rot * sin)
         # x_rotated (B,T,D) -> same size as input
