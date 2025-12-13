@@ -1,11 +1,11 @@
 data_path: 'input.txt'
 checkpoint_path: 'models/checkpoint.pt'
 
-batch_size: 8
-n_emb: 32 
-block_size: 8
-num_heads: 4 
-n_layer: 4
+batch_size: 64
+n_emb: 384
+block_size: 256
+num_heads: 6 
+n_layer: 6
 dropout: 0.2
 
 seed: 1337
