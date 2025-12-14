@@ -61,21 +61,57 @@ def estimate_loss():
 optimizer = optim.AdamW(model.parameters(),lr = config['learning_rate'])
 
 # Train the model
-def train_model(max_steps):
-    for i in range(max_steps):
+def train_model(max_steps,resume = False):
+    print(f"Starting training for {max_steps} steps...")
+    
+    # Try to resume from checkpoint if requested
+    start_step = 0
+    if resume:
+        info = SmallGPT.load_checkpoint(config['checkpoint_path'], model, optimizer)
+        if info is not None:
+            start_step = info['step']
+    
+    best_val_loss = float('inf')
+    for i in range(start_step, max_steps):
         # Forward pass
-        X,Y = get_batch('train')
-        logits,loss = model(X,Y)
+        X, Y = get_batch('train')
+        logits, loss = model(X, Y)
         
         # Backward pass
-        optimizer.zero_grad(set_to_none= True)
+        optimizer.zero_grad(set_to_none=True)
         loss.backward()
         optimizer.step()
 
         # Print out the estimate loss after eval_iters
         if i % config['eval_iters'] == 0 or i == max_steps-1:
             loss_split = estimate_loss()
-            print(f'step {i}: train loss {loss_split['train']:.4f}, val loss {loss_split['val']:.4f}')
+            print(f'step {i}: train loss {loss_split["train"]:.4f}, val loss {loss_split["val"]:.4f}')
+            
+            # Save checkpoint
+            model.save_checkpoint(
+                filepath=config['checkpoint_path'],
+                optimizer=optimizer,
+                step=i,
+                train_loss=loss_split['train'].item(),
+                val_loss=loss_split['val'].item(),
+                config=config,
+                vocab_size=train_set.vocab_size
+            )
+            
+            # Save best model
+            if loss_split['val'] < best_val_loss:
+                best_val_loss = loss_split['val']
+                best_path = config['checkpoint_path'].replace('.pt', '_best.pt')
+                model.save_checkpoint(
+                    filepath=best_path,
+                    optimizer=optimizer,
+                    step=i,
+                    train_loss=loss_split['train'].item(),
+                    val_loss=loss_split['val'].item(),
+                    config=config,
+                    vocab_size=train_set.vocab_size
+                )
+                print(f"New best validation loss: {best_val_loss:.4f}!")
 
 train_model(max_steps = config['max_steps'])
 
