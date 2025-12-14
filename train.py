@@ -79,13 +79,5 @@ def train_model(max_steps):
 
 train_model(max_steps = config['max_steps'])
 
-#Sample
 
-# Initalize the first index (newline char)
-context = torch.zeros((1,1), dtype = torch.long)
-# Get the predictions (the first one in the batch)
-text = model.generate(context, max_new_tokens= 500)[0].tolist()
-# Decode
-text_decoded = ''.join([train_set.itos[c] for c in text])
-print(text_decoded)
 
