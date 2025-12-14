@@ -25,14 +25,8 @@ model = SmallGPT(
 
 # Load checkpoint
 checkpoint_path = config['checkpoint_path'].replace('.pt', '_best.pt')  # Load best model
-print(f"Loading model from {checkpoint_path}")
-checkpoint = torch.load(checkpoint_path)
-model.load_state_dict(checkpoint['model_state_dict'])
+info = SmallGPT.load_checkpoint(checkpoint_path, model)
 model.eval()
-
-print(f"Loaded model from step {checkpoint['step']}")
-print(f"Train loss: {checkpoint['train_loss']:.4f}, Val loss: {checkpoint['val_loss']:.4f}")
-
 # Generate
 context = torch.zeros((1, 1), dtype=torch.long)
 with torch.no_grad():
